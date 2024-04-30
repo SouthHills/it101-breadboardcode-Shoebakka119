@@ -1,0 +1,26 @@
+from gpiozero import LED as LEDClass, Button
+import subprocess
+import time
+
+BUTTON = Button(18)  
+
+def loop():
+    global BUTTON
+    while True:
+        if BUTTON.is_pressed: 
+            process = subprocess.Popen(["firefox"])
+            print ("Firefox has opened")  
+        else: 
+           process.terminate()
+           
+
+def destroy():
+    global BUTTON
+    BUTTON.close()
+
+if __name__ == "__main__":     # Program entrance
+    print ("Program is starting...")
+    try:
+        loop()
+    except KeyboardInterrupt:  # Press ctrl-c to end the program.
+        destroy()
