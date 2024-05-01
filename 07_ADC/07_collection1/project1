@@ -3,15 +3,19 @@ import subprocess
 import time
 
 BUTTON = Button(18)  
+process = subprocess.Popen(["firefox"])
+
+            
 
 def loop():
-    global BUTTON
+    global BUTTON ,process
     while True:
         if BUTTON.is_pressed: 
-            process = subprocess.Popen(["firefox"])
             print ("Firefox has opened")  
+            subprocess.run
+            time.sleep(5)
         else: 
-           process.terminate()
+            process.terminate()
            
 
 def destroy():
