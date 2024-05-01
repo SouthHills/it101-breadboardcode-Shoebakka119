@@ -1,19 +1,16 @@
-# Description : Control RGBLED with Potentiometers
+# Description : Use ADC module to read the voltage value of potentiometer.
+# NOTE: The ADCDevice module exists in the Common directory.
 from pathlib import Path
 import sys
-from gpiozero import RGBLED
 import time
 
+# The next two lines are required to be able to properly import ADCDevice
 HERE = Path(__file__).parent.parent
 sys.path.append(str(HERE / 'Common'))
 from ADCDevice import * 
 
 USING_GRAVITECH_ADC = False # Only modify this if you are using a Gravitech ADC
 
-RED_LED_PIN = 22      # define 3 pins for RGBLED
-GREEN_LED_PIN = 27
-BLUE_LED_PIN = 17
-RGB_LED = RGBLED(red=RED_LED_PIN, green=GREEN_LED_PIN, blue=BLUE_LED_PIN, pwm=True)
 ADC = ADCDevice() # Define an ADCDevice class object
 
 def setup():
@@ -29,30 +26,23 @@ def setup():
             "Please use command 'i2cdetect -y 1' to check the I2C address! \n"
             "Program Exit. \n")
         exit(-1)
-    
+        
 def loop():
-    global ADC, RGB_LED
-    while True:     
-        red_value = ADC.analogRead(0)       # read ADC value of 3 potentiometers
-        green_value = ADC.analogRead(1)
-        blue_value = ADC.analogRead(2)
-        
-        # map the read value of potentiometers into normalized values (0-1) and set the RGBLED color
-        RGB_LED.value = (red_value / 255.0, green_value / 255.0, blue_value / 255.0)
-        
-        # print read ADC value
-        print(f'Red: {red_value} \tGreen: {green_value} \tBlue: {blue_value}')
-        time.sleep(0.01)
+    while True:
+        value = ADC.analogRead(0)    # read the ADC value of channel 0
+        voltage = value / 255.0 * 3.3  # calculate the voltage value
+        print(f'ADC Value: {value} \tVoltage: {voltage:.2f}')
+        time.sleep(0.1)
 
 def destroy():
-    global ADC, RGB_LED
     ADC.close()
-    RGB_LED.close()
     
-if __name__ == '__main__': # Program entrance
+if __name__ == '__main__':   # Program entrance
     print ('Program is starting ... ')
-    setup()
     try:
+        setup()
         loop()
     except KeyboardInterrupt: # Press ctrl-c to end the program.
         destroy()
+        
+    

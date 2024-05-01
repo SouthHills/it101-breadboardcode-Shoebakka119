@@ -36,7 +36,7 @@ def loop():
         LED.value = value / 255.0  # Value of PWM LED must be between 0 and 1
         # calculate the voltage value
         voltage = value / 255.0 * 3.3  # 3.3 because we are using the 3.3V lead
-        print(f'ADC Value : {value}, Voltage : {voltage:.2f}')
+        print(f'ADC Value: {value} \tVoltage: {voltage:.2f}')
         time.sleep(0.03)
 
 def destroy():
