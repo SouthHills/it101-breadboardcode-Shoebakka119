@@ -1,6 +1,5 @@
 from pathlib import Path
 import sys
-import RPi.GPIO as GPIO
 import time
 from gpiozero import LEDBarGraph
 
